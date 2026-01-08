@@ -45,31 +45,25 @@ window.addEventListener("resize", () => {
 const cards = document.querySelectorAll(".card");
 const skills = document.querySelectorAll(".skill");
 
-function checkScroll() {
+function animateSkills() {
   const triggerBottom = window.innerHeight * 0.85;
 
-  cards.forEach(card => {
-    const cardTop = card.getBoundingClientRect().top;
-    if (cardTop < triggerBottom) {
-      card.classList.add("show");
-    }
-  });
-
   skills.forEach(skill => {
+    const bar = skill.querySelector(".bar");
     const skillTop = skill.getBoundingClientRect().top;
+
     if (skillTop < triggerBottom && !skill.classList.contains("animated")) {
       skill.classList.add("animated");
-      const bar = skill.querySelector(".bar");
       const level = bar.getAttribute("data-level");
       setTimeout(() => {
-        bar.style.width = level;
+        bar.style.width = level; // Fill the bar
       }, 100);
     }
   });
 }
 
-window.addEventListener("scroll", checkScroll);
-window.addEventListener("load", checkScroll);
+window.addEventListener("scroll", animateSkills);
+window.addEventListener("load", animateSkills);
 
 /* ---------------------------
    LANGUAGE SWITCHER

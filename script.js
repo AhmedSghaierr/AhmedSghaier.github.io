@@ -1,33 +1,37 @@
-// CARD + TIMELINE ANIMATION
-const cards = document.querySelectorAll(".card");
-const timelineItems = document.querySelectorAll(".timeline-item");
+// MATRIX EFFECT
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-function animate(){
-  const trigger = window.innerHeight * 0.85;
+const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = Array.from({length:columns}).fill(1);
 
-  cards.forEach(c=>{
-    if(c.getBoundingClientRect().top < trigger) c.classList.add("show");
-  });
+function drawMatrix(){
+  ctx.fillStyle="rgba(0,0,0,0.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#bb8fef";
+  ctx.font=fontSize+"px monospace";
 
-  timelineItems.forEach(t=>{
-    if(t.getBoundingClientRect().top < trigger) t.classList.add("show");
+  drops.forEach((y,i)=>{
+    const text=letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text,i*fontSize,y*fontSize);
+    drops[i]= y*fontSize>canvas.height && Math.random()>0.975 ? 0 : y+1;
   });
 }
-window.addEventListener("scroll", animate);
-window.addEventListener("load", animate);
+setInterval(drawMatrix,33);
 
-// LANGUAGE SWITCHER (FULL FIX)
+// TRANSLATION
 document.querySelectorAll(".language-switcher button").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const lang = btn.dataset.lang;
-
+  btn.onclick=()=>{
+    const lang=btn.dataset.lang;
     document.querySelectorAll("[data-text-en]").forEach(el=>{
       el.textContent = el.dataset["text"+lang.charAt(0).toUpperCase()+lang.slice(1)];
     });
-
-    timelineItems.forEach(item=>{
-      item.querySelector(".timeline-date").textContent = item.dataset["date"+lang.charAt(0).toUpperCase()+lang.slice(1)];
-      item.querySelector("h3").textContent = item.dataset["title"+lang.charAt(0).toUpperCase()+lang.slice(1)];
+    document.querySelectorAll(".timeline-item").forEach(item=>{
+      item.textContent = item.dataset[lang];
     });
-  });
+  };
 });

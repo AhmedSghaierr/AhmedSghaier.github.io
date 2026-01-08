@@ -40,14 +40,23 @@ window.addEventListener("resize", () => {
 });
 
 /* ---------------------------
-   CARDS FADE IN ON SCROLL
+   SCROLL ANIMATIONS
 ---------------------------- */
 const cards = document.querySelectorAll(".card");
 const skills = document.querySelectorAll(".skill");
 
-function animateSkills() {
+function checkScroll() {
   const triggerBottom = window.innerHeight * 0.85;
 
+  // Cards fade-in
+  cards.forEach(card => {
+    const cardTop = card.getBoundingClientRect().top;
+    if (cardTop < triggerBottom) {
+      card.classList.add("show");
+    }
+  });
+
+  // Animate skill bars
   skills.forEach(skill => {
     const bar = skill.querySelector(".bar");
     const skillTop = skill.getBoundingClientRect().top;
@@ -55,15 +64,17 @@ function animateSkills() {
     if (skillTop < triggerBottom && !skill.classList.contains("animated")) {
       skill.classList.add("animated");
       const level = bar.getAttribute("data-level");
+
+      // Animate bar width
       setTimeout(() => {
-        bar.style.width = level; // Fill the bar
+        bar.style.width = level;
       }, 100);
     }
   });
 }
 
-window.addEventListener("scroll", animateSkills);
-window.addEventListener("load", animateSkills);
+window.addEventListener("scroll", checkScroll);
+window.addEventListener("load", checkScroll);
 
 /* ---------------------------
    LANGUAGE SWITCHER

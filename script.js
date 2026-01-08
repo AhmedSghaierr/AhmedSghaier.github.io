@@ -40,18 +40,18 @@ window.addEventListener("resize", () => {
 });
 
 /* ---------------------------
-   SCROLL ANIMATIONS
+   SCROLL ANIMATION: CARDS & SKILLS
 ---------------------------- */
 const cards = document.querySelectorAll(".card");
 const skills = document.querySelectorAll(".skill");
 
-function checkScroll() {
+function animateOnScroll() {
   const triggerBottom = window.innerHeight * 0.85;
 
-  // Cards fade-in
+  // Fade in cards
   cards.forEach(card => {
     const cardTop = card.getBoundingClientRect().top;
-    if (cardTop < triggerBottom) {
+    if (cardTop < triggerBottom && !card.classList.contains("show")) {
       card.classList.add("show");
     }
   });
@@ -60,24 +60,19 @@ function checkScroll() {
   skills.forEach(skill => {
     const bar = skill.querySelector(".bar");
     const skillTop = skill.getBoundingClientRect().top;
-
     if (skillTop < triggerBottom && !skill.classList.contains("animated")) {
       skill.classList.add("animated");
       const level = bar.getAttribute("data-level");
-
-      // Animate bar width
-      setTimeout(() => {
-        bar.style.width = level;
-      }, 100);
+      bar.style.width = level; // Fill bar fully
     }
   });
 }
 
-window.addEventListener("scroll", checkScroll);
-window.addEventListener("load", checkScroll);
+window.addEventListener("scroll", animateOnScroll);
+window.addEventListener("load", animateOnScroll);
 
 /* ---------------------------
-   LANGUAGE SWITCHER
+   LANGUAGE SWITCHER (EN/TN/FR)
 ---------------------------- */
 const langButtons = document.querySelectorAll(".language-switcher button");
 langButtons.forEach(btn => {

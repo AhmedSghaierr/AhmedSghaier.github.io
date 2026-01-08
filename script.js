@@ -1,0 +1,91 @@
+/* ---------------------------
+   MATRIX BACKGROUND
+---------------------------- */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const fontSize = 18;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for (let x = 0; x < columns; x++) drops[x] = 1;
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(13,11,20,0.05)"; // fade effect
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#bb8fef"; // purple letters
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+}
+
+setInterval(drawMatrix, 50);
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+/* ---------------------------
+   CARDS FADE IN ON SCROLL
+---------------------------- */
+const cards = document.querySelectorAll(".card");
+const skills = document.querySelectorAll(".skill");
+
+function checkScroll() {
+  const triggerBottom = window.innerHeight * 0.85;
+
+  cards.forEach(card => {
+    const cardTop = card.getBoundingClientRect().top;
+    if (cardTop < triggerBottom) {
+      card.classList.add("show");
+    }
+  });
+
+  skills.forEach(skill => {
+    const skillTop = skill.getBoundingClientRect().top;
+    if (skillTop < triggerBottom && !skill.classList.contains("animated")) {
+      const bar = document.createElement("div");
+      bar.classList.add("bar");
+      skill.appendChild(bar);
+
+      // Animate width
+      const level = skill.getAttribute("data-level");
+      setTimeout(() => {
+        bar.style.width = level;
+      }, 100);
+
+      skill.classList.add("animated");
+    }
+  });
+}
+
+window.addEventListener("scroll", checkScroll);
+window.addEventListener("load", checkScroll);
+
+/* ---------------------------
+   LANGUAGE SWITCHER
+---------------------------- */
+const langButtons = document.querySelectorAll(".language-switcher button");
+langButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const lang = btn.getAttribute("data-lang");
+    document.querySelectorAll("[data-text-en]").forEach(el => {
+      const text = el.getAttribute("data-text-" + lang);
+      el.textContent = text;
+    });
+  });
+});

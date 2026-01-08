@@ -1,4 +1,4 @@
-/* MATRIX EFFECT */
+/* MATRIX BACKGROUND */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -10,11 +10,11 @@ const fontSize = 16;
 const columns = canvas.width / fontSize;
 const drops = Array.from({length:columns}).fill(1);
 
-function drawMatrix(){
-  ctx.fillStyle = "rgba(0,0,0,0.06)";
+function draw(){
+  ctx.fillStyle="rgba(0,0,0,0.06)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = "#c77dff";
-  ctx.font = fontSize + "px monospace";
+  ctx.fillStyle="#c77dff";
+  ctx.font=fontSize+"px monospace";
 
   drops.forEach((y,i)=>{
     const text = chars[Math.floor(Math.random()*chars.length)];
@@ -22,7 +22,7 @@ function drawMatrix(){
     drops[i] = y*fontSize > canvas.height && Math.random()>0.975 ? 0 : y+1;
   });
 }
-setInterval(drawMatrix,33);
+setInterval(draw,33);
 
 /* SKILL BAR ANIMATION */
 const observer = new IntersectionObserver(entries=>{

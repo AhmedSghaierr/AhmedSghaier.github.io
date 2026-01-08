@@ -8,6 +8,7 @@ const fontSize=18;
 const columns=canvas.width/fontSize;
 const drops=Array.from({length:columns}).fill(1);
 
+
 function draw(){
   ctx.fillStyle="rgba(13,11,20,0.05)";
   ctx.fillRect(0,0,canvas.width,canvas.height);

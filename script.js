@@ -8,6 +8,7 @@ pic.addEventListener('click', () => {
   sound.currentTime = 0;
   sound.play();
 
+
   // Show meme with animation
   meme.style.display = 'block';
   meme.style.opacity = 0;

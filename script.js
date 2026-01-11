@@ -1,42 +1,51 @@
-// EASTER EGG ONLY
-const pic = document.getElementById('profilePic');
-const meme = document.getElementById('memeImg');
-const sound = document.getElementById('memeSound');
-
-pic.addEventListener('click', () => {
-  // Play sound
-  sound.currentTime = 0;
-  sound.play();
-
-
-  // Show meme with animation
-  meme.style.display = 'block';
-  meme.style.opacity = 0;
-  meme.style.transform = 'translate(-50%, -50%) scale(0.5)';
-
-  // Animate in
-  let opacity = 0;
-  let scale = 0.5;
-  const animateIn = setInterval(() => {
-    if(opacity < 1) opacity += 0.05;
-    if(scale < 1) scale += 0.05;
-    meme.style.opacity = opacity;
-    meme.style.transform = `translate(-50%, -50%) scale(${scale})`;
-    if(opacity >= 1 && scale >= 1) clearInterval(animateIn);
-  }, 20);
-
-  // Fade out after 3 seconds
-  setTimeout(() => {
-    const fadeOut = setInterval(() => {
-      if(opacity > 0) {
-        opacity -= 0.05;
-        scale -= 0.05;
-        meme.style.opacity = opacity;
-        meme.style.transform = `translate(-50%, -50%) scale(${scale})`;
-      } else {
-        meme.style.display = 'none';
-        clearInterval(fadeOut);
-      }
-    }, 20);
-  }, 3000);
-});
+‎/* MATRIX BACKGROUND 
+‎canvas.width = window.innerWidth;
+‎canvas.height = window.innerHeight;
+‎
+‎const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+‎const fontSize = 16;
+‎const columns = canvas.width / fontSize;
+‎const drops = Array.from({length:columns}).fill(1);
+‎
+‎function draw(){
+‎  ctx.fillStyle="rgba(0,0,0,0.06)";
+‎  ctx.fillRect(0,0,canvas.width,canvas.height);
+‎  ctx.fillStyle="#c77dff";
+‎  ctx.font=fontSize+"px monospace";
+‎
+‎  drops.forEach((y,i)=>{
+‎    const text = chars[Math.floor(Math.random()*chars.length)];
+‎    ctx.fillText(text,i*fontSize,y*fontSize);
+‎    drops[i] = y*fontSize > canvas.height && Math.random()>0.975 ? 0 : y+1;
+‎  });
+‎}
+‎setInterval(draw,33);
+‎
+‎/* SKILL BAR ANIMATION */
+‎const observer = new IntersectionObserver(entries=>{
+‎  entries.forEach(entry=>{
+‎    if(entry.isIntersecting){
+‎      entry.target.style.width = entry.target.dataset.level;
+‎    }
+‎  });
+‎},{threshold:0.6});
+‎
+‎document.querySelectorAll(".bar-fill").forEach(bar=>{
+‎  observer.observe(bar);
+‎});
+‎
+‎/* TRANSLATION */
+‎document.querySelectorAll(".language-switcher button").forEach(btn=>{
+‎  btn.onclick = ()=>{
+‎    const lang = btn.dataset.lang;
+‎
+‎    document.querySelectorAll("[data-text-en]").forEach(el=>{
+‎      el.textContent = el.dataset["text"+lang.charAt(0).toUpperCase()+lang.slice(1)];
+‎    });
+‎
+‎    document.querySelectorAll(".timeline-item").forEach(item=>{
+‎      item.textContent = item.dataset[lang];
+‎    });
+‎  };
+‎});
+‎
